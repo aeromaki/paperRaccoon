@@ -37,10 +37,9 @@
 
 ## 모델팀 진행계획
 
-- 시험기간 이후 ~ 컨퍼 전까지 
-  - RL Training, PDF 전처리, Data Augmentation 코드 완성하고 성능개선 부분에 집중하여 진행 
-  - 디버깅 
-  - 코드 배포용이하도록 정리 
+- RL Training, PDF 전처리, Data Augmentation 코드 완성하고 성능개선 부분에 집중하여 진행 
+- 디버깅 
+- 코드 배포용이하도록 정리 
 
 
 
