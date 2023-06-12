@@ -129,13 +129,14 @@
     - policy_output은 정확하게는 policy_output의 logits 값이 필요. (코드로는 policy_output.logits, 문장의 각 위치의 출력 단어에 대한 확률값을 의미) 
     - 이전 데이터를 활용해서 새로운값과 비교하고 Reward와 Policy 모델을 업데이트 하는 개념
     - 추가적으로 데이터 더 필요한 부분은 확인되는대로 바로 말씀드리겠음.
+    - policy_output size의 숫자 50000은 출력가능한 단어의 수를 의미. policy model의 summarized text가 단어 하나하나 5만개 중에 확률값 가장 높은걸로 골라서 출력되는 개념   
 
 - **정리하면 Policy model, Reward model Fine tuning할 때는 original text, summarized text, human choice (reward model만)이 필요하고 RLHF Training을 진행할 때는 original text, policy model outout, reward model output 필요**
 
   - 실제 서비스할 때는 Reward model online learning과 RLHF Training을 진행
-    - **데이터 original text, summarized text (policy model 2개의 출력 결과), human choice -> Reward model online learning **
+    - **데이터 original text, summarized text (policy model 2개의 출력 결과), human choice -> Reward model online learning**
       - summarized text는 저장된 여러 policy model 중에 현재 모델, 예전 아무 모델 이렇게 2개로 불러와서 original text넣고 각각 summarized text 출력하면 됨  
-    - **데이터 original text, policy_model_ooutput, reward_model_output -> RLHF Training 진행 (batch단위로 실행) **
+    - **데이터 original text, policy_model_ooutput, reward_model_output -> RLHF Training 진행 (batch단위로 실행)**
 
 
 ## 코드 구성
