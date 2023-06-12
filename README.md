@@ -119,14 +119,14 @@
 
   - Policy model과 Reward model 동시에 RLHF로 업데이트 할 때 사용 
 
-    | original_text (string)                                  | policy_output (Tensor) | reward_output (Tensro) |
+    | original_text (string)                                  | policy_output (Tensor) | reward_output (Tensor) |
     | ------------------------------------------------------- | -----------------------| ---------------------- | 
     | Good Morining! Today is sunny. I want to play ~         | Tensor([0.2,0.3,0.1,0.4]) | Tensor(0.3579)      |
     | Good Afternoon! Today is rainy. I don't want to play ~  | Tensor([0.5,0.1,0.3,0.1]) |  Tensor(0.1381)    | 
     | Good Evening! Today is snowing. I want to drive fast. ~ | Tensor([0.3,0.2,0.1,0.4]) | Tensor(0.7852)   | 
 
   - 'original_text' (원본텍스트, string), 'policy_output' (Tensor, size=(summarized_length, 50000)), 'reward_output' (Tensor, size=(1) 필요 
-    - policy_output은 정확하게는 policy_output의 logits 값이 필요.
+    - policy_output은 정확하게는 policy_output의 logits 값이 필요. (코드로는 policy_output.logits, 문장의 각 위치의 출력 단어에 대한 확률값을 의미) 
     - 이전 데이터를 활용해서 새로운값과 비교하고 Reward와 Policy 모델을 업데이트 하는 개념
     - 추가적으로 데이터 더 필요한 부분은 확인되는대로 바로 말씀드리겠음.
 
