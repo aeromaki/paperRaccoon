@@ -13,7 +13,7 @@
       - original text, summarized text 2개, human choice 
         - 정리하면 original text, good summarized text, bad summarized text 필요 
     - RLHF Training
-      - original text
+      - original text, policy_model_output, reward_model_output
   - 서비스 배포 
     - Reward model Training 
       -  original text, summarized text (policy model 2개의 출력 결과), human choice
@@ -117,15 +117,18 @@
 
   - Policy model과 Reward model 동시에 RLHF로 업데이트 할 때 사용 
 
-    | original_text (string)                                  |
-    | ------------------------------------------------------- |
-    | Good Morining! Today is sunny. I want to play ~         |
-    | Good Afternoon! Today is rainy. I don't want to play ~  |
-    | Good Evening! Today is snowing. I want to drive fast. ~ |
+    | original_text (string)                                  | policy_output (Tensor) | reward_output (Tensro) |
+    | ------------------------------------------------------- | -----------------------| ---------------------- | 
+    | Good Morining! Today is sunny. I want to play ~         | Tensor([0.2,0.3,0.1,0.4]) | Tensor(0.3579)      |
+    | Good Afternoon! Today is rainy. I don't want to play ~  | Tensor([0.5,0.1,0.3,0.1]) |  Tensor(0.1381)    | 
+    | Good Evening! Today is snowing. I want to drive fast. ~ | Tensor([0.3,0.2,0.1,0.4]) | Tensor(0.7852)   | 
 
-  - 'original_text' (원본텍스트, string) 이것만 준비되면 됨
+  - 'original_text' (원본텍스트, string), 'policy_output' (Tensor, size=(summarized_length, 50000)), 'reward_output' (Tensor, size=(1) 필요 
+    - policy_output은 정확하게는 policy_output의 logits 값이 필요.
+    - 이전 데이터를 활용해서 새로운값과 비교하고 Reward와 Policy 모델을 업데이트 하는 개념
+    - 추가적으로 데이터 더 필요한 부분은 확인되는대로 바로 말씀드리겠음.
 
-- **정리하면 Policy model, Reward model Fine tuning할 때는 original text, summarized text, human choice (reward model만)이 필요하고 RLHF Training을 진행할 때는 original text만 필요**
+- **정리하면 Policy model, Reward model Fine tuning할 때는 original text, summarized text, human choice (reward model만)이 필요하고 RLHF Training을 진행할 때는 original text, policy model outout, reward model output 필요**
 
   - 실제 서비스할 때는 Reward model online learning과 RLHF Training을 진행
     - **즉, 서비스 할 때는 original text, summarized text (policy model 2개의 출력 결과), human choice로 이뤄진 DB를 지속적으로 업데이트해야함. RLHF Training은 이 DB에서 original_text만 빼오면 됨** 
