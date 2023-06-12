@@ -10,21 +10,23 @@
     - Policy model Training
       - original text, summarized text
     - Reward model Training
-      - original text, summarized text 2개, human choice 
+      - original text, summarized text 2개, human choice
         - 정리하면 original text, good summarized text, bad summarized text 필요 
     - RLHF Training
       - original text, policy_model_output, reward_model_output
   - 서비스 배포 
     - Reward model Training 
       -  original text, summarized text (policy model 2개의 출력 결과), human choice
+        - summarized text는 현재 policy model, 이전 policy model 불러와서 original text 넣고 각각 summarized text 출력하면 됨  
     - RLHF Training
-      - Reward model Training DB에서 original text만 필요 
+      - original text, policy_model_output, reward_model_output 필요 
 - **코드 설명** 
   - lab/policy_model_with_training/**Policy_Model_Trainingver2.ipynb**
     - 데이터 로드 및 전처리, Policy 모델 정의 및 Trainining 코드
       - policy model == language model 
   - lab/reward_model/**reward_train.ipynb**
     - 데이터 로드 및 전처리, Reward 모델 정의 및 Training 코드
+      - reward model == (language model encoders + Linear layers)  
   - lab/_garb 안에 있는 것들은 신경 쓸 필요 없음 (그냥 저장용, 앞으로 쓸 일 없음)
 - **현재 결과**
   - Reward model 구현 완료, Training에서 수렴성 보임 
@@ -131,8 +133,9 @@
 - **정리하면 Policy model, Reward model Fine tuning할 때는 original text, summarized text, human choice (reward model만)이 필요하고 RLHF Training을 진행할 때는 original text, policy model outout, reward model output 필요**
 
   - 실제 서비스할 때는 Reward model online learning과 RLHF Training을 진행
-    - **즉, 서비스 할 때는 original text, summarized text (policy model 2개의 출력 결과), human choice로 이뤄진 DB를 지속적으로 업데이트해야함. RLHF Training은 이 DB에서 original_text만 빼오면 됨** 
-
+    - **데이터 original text, summarized text (policy model 2개의 출력 결과), human choice -> Reward model online learning **
+      - summarized text는 저장된 여러 policy model 중에 현재 모델, 예전 아무 모델 이렇게 2개로 불러와서 original text넣고 각각 summarized text 출력하면 됨  
+    - **데이터 original text, policy_model_ooutput, reward_model_output -> RLHF Training 진행 (batch단위로 실행) **
 
 
 ## 코드 구성
