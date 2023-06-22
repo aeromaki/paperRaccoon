@@ -1,5 +1,11 @@
 <img src='./raccoon.jpg'>
 
+
+reward model: https://drive.google.com/file/d/13AJNdIcUjsa3EXKIJvJrzALNf4Fr6y1V/view?usp=sharing
+
+denoiser: https://drive.google.com/file/d/13PNXQxskZQ1YHxOA-lCuskhQmSVsmJGk/view?usp=sharing
+
+
 ## Summary
 
 - **현재 데이터**
