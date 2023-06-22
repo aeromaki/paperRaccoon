@@ -30,3 +30,22 @@ class RoBERTa_Denoiser(nn.Module):
 device = "cuda"
 denoiser = RoBERTa_Denoiser(device).to(device)
 denoiser.load_state_dict(torch.load("denoiser_roberta_rto_num_14000.pth"))
+
+
+def denoise(text, max_seq_len=512):
+    enc = tokenizer.encode(text)[1:-1]
+    ll = len(enc)
+    chunk = max_seq_len - 2
+
+    ret = []
+    for i in range(0, ll, chunk):
+        input_ids = torch.tensor([[tokenizer.bos_token_id] + enc[i:i+chunk] + [tokenizer.eos_token_id]]).to(device)
+        
+        with torch.no_grad():
+            remove = (denoiser(input_ids) > 0).to("cpu")
+        
+        for j, k in zip(input_ids[0,1:-1], remove[0,1:-1]):
+            if not k:
+                ret += [j]
+
+    return tokenizer.decode(ret)
