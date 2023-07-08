@@ -1,0 +1,37 @@
+<!-- feedback.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Summary Feedback</title>
+    <script>
+        function showAlert() {
+            alert("Text and summary saved successfully.");
+        }
+    </script>
+</head>
+<body>
+    <h1>Raccoon-Feedback</h1>
+    
+    {% for index in range(section_length) %}
+        <h2>Section: {{ section[index] }}</h2>
+        <p>Text: {{ text[index] }}</p>
+        <p>Summary 1: {{ summary0[index] }}</p>
+        <p>Summary 2: {{ summary1[index] }}</p>
+        
+        <form method="POST" action="/save">
+            <input type="radio" name="summary_feedback" value="summary0"> Summary 1
+            <input type="radio" name="summary_feedback" value="summary1"> Summary 2
+            <input type="hidden" name="text" value="{{ text[index] }}">
+            <input type="hidden" name="summary0" value="{{ summary0[index] }}">
+            <input type="hidden" name="summary1" value="{{ summary1[index] }}">
+            
+        
+    {% endfor %}
+            <a href='#'><input type="submit" value="Submit Feedback", onclick="alert('성공적으로 저장했습니다')"></a>        
+        </form>
+        
+        <hr>
+    
+</body>
+</html>
